@@ -1,6 +1,77 @@
-These are test definitions. This is a title.
+Indented text blocks are rendered as blockquotes
 .
-The [markdown](//daringfireball.net/markdown) above should match the html below.
+Paragraph text
+
+    This is a blockquote.
+    It can span multiple lines.
 .
-<p>The <a href="//daringfireball.net/markdown">markdown</a> above should match the html below.</p>
+<p>Paragraph text</p>
+<blockquote>This is a blockquote.
+It can span multiple lines.</blockquote>
+.
+
+Blockquotes are rendered without paragraph tags
+.
+Paragraph text
+
+    This is the first paragraph of a blockquote.
+
+    This is the second paragraph of a blockquote.
+
+Paragraph text
+.
+<p>Paragraph text</p>
+<blockquote>This is the first paragraph of a blockquote.</blockquote>
+<blockquote>This is the second paragraph of a blockquote.</blockquote>
+<p>Paragraph text</p>
+.
+
+Nested blockquotes are rendered with a depth indicator
+.
+Paragraph text
+
+    This is a blockquote that quotes someone else:
+
+        This is a nested blockquote.
+
+    Then the first blockquote continues.
+
+Paragraph text
+.
+<p>Paragraph text</p>
+<blockquote>This is a blockquote that quotes someone else:</blockquote>
+<blockquote class="indent-2">This is a nested blockquote.</blockquote>
+<blockquote>Then the first blockquote continues.</blockquote>
+<p>Paragraph text</p>
+.
+
+Text indents are normalized to four spaces
+.
+Paragraph text
+
+ Paragraph text
+
+  Paragraph text
+
+   Paragraph text
+
+    Blockquote text
+
+     Blockquote text
+
+      Blockquote text
+
+       Blockquote text
+
+        Nested blockquote
+.
+<p>Paragraph text</p>
+<p>Paragraph text</p>
+<p>Paragraph text</p>
+<p>Paragraph text</p>
+<blockquote>Blockquote text</blockquote>
+<blockquote>Blockquote text</blockquote>
+<blockquote>Blockquote text</blockquote>
+<blockquote>Blockquote text</blockquote>
+<blockquote class="indent-2">Nested blockquote</blockquote>
 .
