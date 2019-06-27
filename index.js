@@ -1,7 +1,7 @@
 'use strict'
 
 function code(state, startLine, endLine/*, silent*/) {
-  var nextLine, last, token, match
+  var nextLine, last, token, match, content, indent = 0
   if (state.sCount[startLine] - state.blkIndent < 4) { return false }
   last = nextLine = startLine + 1
   while (nextLine < endLine) {
@@ -13,31 +13,38 @@ function code(state, startLine, endLine/*, silent*/) {
     break
   }
   state.line = last
-  token         = state.push('indented_quote', 'blockquote', 0)
-  token.content = state.getLines(startLine, last, 4 + state.blkIndent, true)
-  match = token.content.match(/^ +/)
+  content  = state.getLines(startLine, last, 4 + state.blkIndent, true)
+  match = content.match(/^ +/)
   if (match) {
-    token.content = token.content.replace(/^ +/, '')
+    content = content.replace(/^ +/, '')
     if (match[0].length >= 4) {
-      if (!token.attrs) token.attrs = {}
-      token.attrs.indent = 1 + Math.floor(match[0].length / 4)
+      indent = 1 + Math.floor(match[0].length / 4)
     }
   }
+  content = content.replace(/[\r\n]+$/g, '')
+
+  token         = state.push('indented_quote_open', 'blockquote', 1)
   token.map     = [startLine, state.line]
+  if (indent) {
+    if (!token.attrs) {
+      token.attrs = []
+    }
+    token.attrs.push(['class', 'indent-' + indent])
+  }
+
+  token = state.push('inline', '', 0)
+  token.content = content
+  token.map      = [startLine, state.line]
+  token.children = []
+  token.map     = [startLine, state.line]
+
+  token         = state.push('indented_quote_close', 'blockquote', -1)
 
   return true
 }
 
 
 module.exports = function plugin(md) {
-  md.renderer.rules.indented_quote = function (tokens, idx) {
-    return '<blockquote' +
-      (tokens[idx].attrs && tokens[idx].attrs.indent > 1 ? ' class="indent-' + tokens[idx].attrs.indent + '"' : '') +
-      '>' +
-      tokens[idx].content.replace(/[\r\n]+$/g, '') + '</blockquote>\n'
-  }
-
-
   md.block.ruler.disable('code')
   md.block.ruler.before('code', 'code_', code)
   return md
