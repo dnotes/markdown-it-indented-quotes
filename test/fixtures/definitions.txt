@@ -75,3 +75,13 @@ Paragraph text
 <blockquote>Blockquote text</blockquote>
 <blockquote class="indent-2">Nested blockquote</blockquote>
 .
+
+Escapes, html entities, and inline markers function within quotes
+.
+text with **inlines**, \[backslash escapes\], typography(tm), "smart quotes", character references (&#x1f600;) &amp;&nbsp;entities.
+
+    text with **inlines**, \[backslash escapes\], typography(tm), "smart quotes", character references (&#x1f600;) &amp;&nbsp;entities.
+.
+<p>text with <strong>inlines</strong>, [backslash escapes], typography™, “smart quotes”, character references (😀) &amp; entities.</p>
+<blockquote>text with <strong>inlines</strong>, [backslash escapes], typography™, “smart quotes”, character references (😀) &amp; entities.</blockquote>
+.
