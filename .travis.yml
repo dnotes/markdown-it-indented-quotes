@@ -1,7 +1,14 @@
 language: node_js
 node_js:
- - node
- - lts/*
+- node
+- lts/*
 script: yarn lint && yarn coverage
 sudo: false
-# deploy: run `travis setup npm`
+deploy:
+  provider: npm
+  email: git@dnotes.net
+  api_key:
+    secure: PY81TdeWrwgXPd22aE4mBqX3oCGgE6M6/MG6kfp5pmvHwnYLs4HKtnkMRK0ICPzDXnrX6iwrzqxdydtzu1jZeHWx3SCgAkUtORVPJ6owN7IuAmeA1e73cBqR4isfbSnAFNfR1PRJZi7NwkpIjPLEKXheEwCUC+EhVw4dxy3hRAzz2YCu8DAeLJ+Ccgoog5R4LbBPnq/5k4PNFkN78lJSpSKXr2/IHgnDtb61l9+pjJT9Ez0YHEe2Ei/FO0cWuB5nDSVph8K/KNdroUnLHq8mm5VlsyWzc3BMskY7VeaImzHzXcorSisi0E2MY/vhYjfyw3oZPu2MkrwfIlzpE9s+AYRtvUkAsrCzP2RXqjv+7Cjq4vqHToOe+1e+wvb1eqgT/bg0cYU4WK81rTcEreMJIEPuS8wu30JRA5qM2nwT/O0F6o4ovC3/NbGQdlnaZSnetYzyQ/kmuxRIOOcH+oQHCOYXV2rmqeUh8RkxIEFnpUIKmils/+2mcLigqmYj63Nj9jZt4ZA25HvYJGa09LlM/KA6UB2L46CHSKlhOtA8o24+0OgY+NwPZYSSRscDVvjfkCFW+VktpY47QiEMCAYi7yIwOCF6C1MlddO2fo0Fh4iVyARZHkQsm2Ze+6/BGg+/6yOyI3l3P0CzKdPNX5lXFMM8+mIhHCv93jJ3o24eFvM=
+  on:
+    tags: true
+    repo: dnotes/markdown-it-indented-quotes
