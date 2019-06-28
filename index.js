@@ -26,6 +26,8 @@ function code(state, startLine, endLine/*, silent*/) {
   token         = state.push('indented_quote_open', 'blockquote', 1)
   token.map     = [startLine, state.line]
   if (indent) {
+    /* istanbul ignore next */
+    // New tokens from state.push NEVER have attrs set--but just in case...
     if (!token.attrs) {
       token.attrs = []
     }
