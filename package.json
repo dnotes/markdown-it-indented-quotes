@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-indented-quotes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A markdown-it plugin that renders indented text blocks as blockquotes instead of code",
   "main": "index.js",
   "scripts": {
