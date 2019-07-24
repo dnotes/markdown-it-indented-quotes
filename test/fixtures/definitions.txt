@@ -310,7 +310,7 @@ baz</p>
 </blockquote>
 .
 
-Indented quotes work within Commonmark quotes.
+Indented quotes work within Commonmark quotes, if the line is indented by more than four characters after "> ".
 .
 >     foo
     bar
@@ -325,4 +325,13 @@ Indented quotes work within Commonmark quotes.
 </blockquote>
 .
 
-
+Commonmark quotes can still use lazy formatting, provided the first line is not indented by more than 4 characters.
+.
+>    hey
+       you
+.
+<blockquote>
+<p>hey
+you</p>
+</blockquote>
+.
