@@ -34,13 +34,19 @@ function code(state, startLine, endLine/*, silent*/) {
     token.attrs.push(['class', 'indent-' + indent])
   }
 
+  token = state.push('paragraph_open', 'p', 1)
+  token.map      = [startLine, state.line]
+
   token = state.push('inline', '', 0)
   token.content = content
   token.map      = [startLine, state.line]
   token.children = []
-  token.map     = [startLine, state.line]
+
+  token = state.push('paragraph_close', 'p', -1)
+  token.map      = [startLine, state.line]
 
   token         = state.push('indented_quote_close', 'blockquote', -1)
+  token.map     = [startLine, state.line]
 
   return true
 }
