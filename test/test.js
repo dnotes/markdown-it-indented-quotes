@@ -9,5 +9,8 @@ describe('Tests for markdown-it plugin', function () {
   var md = require('markdown-it')('commonmark', { typographer: true })
     .enable(['linkify', 'smartquotes', 'replacements'])
     .use(require('../'))
+    .use(require('markdown-it-attrs'), {
+      allowedAttributes: ['class'],
+    })
   generate(path.join(__dirname, 'fixtures/definitions.txt'), { header: true }, md)
 })
