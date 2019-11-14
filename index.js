@@ -30,7 +30,9 @@ function indented_quote(state, startLine, endLine/*, silent*/) {
   state.md.block.tokenize(state, startLine, endQuote)
   indent = ~~(state.blkIndent / 4) // eslint-disable-line
   for (; tokenCount < state.tokens.length; tokenCount++) {
-    if ((state.tokens[tokenCount].meta === null || state.tokens[tokenCount].meta.indent === 'undefined') &&
+    /* istanbul-ignore-if */
+    if ((state.tokens[tokenCount].meta === null ||
+        /* istanbul ignore next */ state.tokens[tokenCount].meta.indent === 'undefined') && // eslint-disable-line
         ['paragraph_open', 'fence'].indexOf(state.tokens[tokenCount].type) > -1) {
       state.tokens[tokenCount].attrPush(['class', 'indent-' + indent])
       state.tokens[tokenCount].meta = Object.assign({}, state.tokens[tokenCount].meta, { indent: indent })
