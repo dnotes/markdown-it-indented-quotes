@@ -1,59 +1,47 @@
 'use strict'
 
-function code(state, startLine, endLine/*, silent*/) {
-  var nextLine, last, token, match, content, indent = 0
+function indented_quote(state, startLine, endLine/*, silent*/) {
+
+  // If it's not indented, it's not a quote
   if (state.sCount[startLine] - state.blkIndent < 4) { return false }
-  last = nextLine = startLine + 1
-  while (nextLine < endLine) {
-    if (state.sCount[nextLine] - state.blkIndent >= 4) {
-      nextLine++
-      last = nextLine
-      continue
-    }
-    break
-  }
-  state.line = last
-  content  = state.getLines(startLine, last, 4 + state.blkIndent, true)
-  match = content.match(/^ +/)
-  if (match) {
-    content = content.replace(/^ +/, '')
-    if (match[0].length >= 4) {
-      indent = 1 + Math.floor(match[0].length / 4)
-    }
-  }
-  content = content.replace(/[\r\n]+$/g, '')
 
-  token         = state.push('indented_quote_open', 'blockquote', 1)
-  token.map     = [startLine, state.line]
-  if (indent) {
-    /* istanbul ignore next */
-    // New tokens from state.push NEVER have attrs set--but just in case...
-    if (!token.attrs) {
-      token.attrs = []
+  // Initialize variables
+  let endQuote,
+      indent,
+      blkIndentNew = state.sCount[startLine] - state.blkIndent,
+      blkIndentOld = state.blkIndent,
+      tokenCount = state.tokens.length
+
+  endQuote = startLine + 1
+  while (endQuote < endLine) {
+    if (state.sCount[endQuote] - state.blkIndent < 4 || state.isEmpty(endQuote)) {
+      break
     }
-    token.attrs.push(['class', 'indent-' + indent])
+    blkIndentNew = Math.min(blkIndentNew, state.sCount[endQuote] - state.blkIndent)
+    endQuote++
   }
 
-  token = state.push('paragraph_open', 'p', 1)
-  token.map      = [startLine, state.line]
+  // Indented quotes connected to a paragraph are part of the paragraph
+  if (!state.isEmpty(endQuote)) {
+    return false
+  }
 
-  token = state.push('inline', '', 0)
-  token.content = content
-  token.map      = [startLine, state.line]
-  token.children = []
-
-  token = state.push('paragraph_close', 'p', -1)
-  token.map      = [startLine, state.line]
-
-  token         = state.push('indented_quote_close', 'blockquote', -1)
-  token.map     = [startLine, state.line]
+  state.blkIndent = blkIndentNew
+  state.md.block.tokenize(state, startLine, endQuote)
+  indent = ~~(state.blkIndent / 4) // eslint-disable-line
+  for (; tokenCount < state.tokens.length; tokenCount++) {
+    if ((state.tokens[tokenCount].meta === null || state.tokens[tokenCount].meta.indent === 'undefined') &&
+        ['paragraph_open', 'fence'].indexOf(state.tokens[tokenCount].type) > -1) {
+      state.tokens[tokenCount].attrPush(['class', 'indent-' + indent])
+      state.tokens[tokenCount].meta = Object.assign({}, state.tokens[tokenCount].meta, { indent: indent })
+    }
+  }
+  state.blkIndent = blkIndentOld
 
   return true
 }
 
-
 module.exports = function plugin(md) {
-  md.block.ruler.disable('code')
-  md.block.ruler.before('code', 'code_', code)
+  md.block.ruler.at('code', indented_quote)
   return md
 }

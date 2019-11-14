@@ -109,32 +109,38 @@ Thematic breaks and headings do not receive the indent class
 <h2>SEText Heading</h2>
 .
 
-When part of a paragraph, indented text blocks are rendered as `q.blockquote` elements
+Indented quotes must be separated from paragraphs by blank lines
 .
+
+Paragraph text:
+    This is not a quote!
+    It is part of the paragraph!
+more paragraph text.
+
 Foo
     bar
         baz
-.
-<p>Foo
-<q class="blockquote indent-1">bar</q>
-<q class="blockquote indent-2">baz</q></p>
-.
 
-At the beginning of a paragraph, indented text blocks are only rendered as q.blockquote if they contain more than one line
-.
-    foo
+    Foo
 bar
 baz
 
-    foo
+    Foo
     bar
 baz
 .
-<p>foo
+<p>Paragraph text:
+This is not a quote!
+It is part of the paragraph!
+more paragraph text.</p>
+<p>Foo
 bar
 baz</p>
-<p><q class="blockquote indent-1">foo
-bar</q>
+<p>Foo
+bar
+baz</p>
+<p>Foo
+bar
 baz</p>
 .
 
@@ -145,32 +151,6 @@ This is true whenever the first line is indented four spaces beyond the rest of 
 .
 <p class="indent-1">foo
 bar</p>
-.
-
-Inside a paragraph, indented text blocks are rendered as `q.blockquote` elements
-.
-Paragraph text:
-    Indented quote
-    on two lines.
-more paragraph text.
-.
-<p>Paragraph text:
-<q class="blockquote indent-1">Indented quote
-on two lines.</q>
-more paragraph text.</p>
-.
-
-Indented text blocks are still inside a paragraph if separated by a blank line that is indented
-.
-Paragraph text:
-    
-    Indented quote.
-    
-more paragraph text.
-.
-<p>Paragraph text:
-<q class="blockquote indent-1">Indented quote.</q>
-more paragraph text.</p>
 .
 
 Blank lines around indented quotes are not rendered.
@@ -197,8 +177,7 @@ Code fences get the indent class
     aaa
     ```
 .
-<pre class="indent-1"><code>
-aaa
+<pre><code class="indent-1">aaa
 </code></pre>
 .
 
@@ -208,35 +187,24 @@ Link reference definitions work even if they are indented
 
 [foo]
 .
-<a href="/url" title="title">foo</a>
+<p><a href="/url" title="title">foo</a></p>
 .
 
-Commonmark block quotes get the indent class
+The indent class is given to paragraphs inside blockquote elements
 .
     > # Foo
     > bar
     > baz
 .
-<blockquote class="indent-1">
+<blockquote>
 <h1>Foo</h1>
-<p>bar
+<p class="indent-1">bar
 baz</p>
 </blockquote>
 .
 
-When used with markdown-it-attrs, attributes apply to indented text blocks
+Attributes must be indented the same amount as the text they modify
 .
-Paragraph text
-    Quote text {.test}
-
-Paragraph text
-    Quote text
-    {.test}
-
-Paragraph text
-    Quote text
-{.test}
-
 Paragraph text
 
     Blockquote text {.test}
@@ -244,36 +212,37 @@ Paragraph text
     Blockquote text
     {.test}
 
-    Blockquote text
+    Paragraph text
 {.test}
 
-    Blockquote text
-    blockquote text
+    Paragraph text
+    paragraph text
 {.test}
 .
-<p>Paragraph text
-<q class="blockquote indent-1 test">Quote text</q></p>
-
-<p>Paragraph text
-<q class="blockquote indent-1 test">Quote text</q></p>
-
-<p class="test">Paragraph text
-<q class="blockquote indent-1">Quote text</q></p>
-
 <p>Paragraph text</p>
-
 <p class="indent-1 test">Blockquote text</p>
-
 <p class="indent-1 test">Blockquote text</p>
-
-not sure about the last two yet
+<p class="test">Paragraph text</p>
+<p class="test">Paragraph text
+paragraph text</p>
 .
 
-I'm not sure what should happen here. Let's see what turns out.
+TODO: Indented quotes aren't yet parsed inside blockquote elements
 .
 >     foo
     bar
+
+>        foo
+         bar
 .
+<blockquote>
+<p>foo
+bar</p>
+</blockquote>
+<blockquote>
+<p>foo
+bar</p>
+</blockquote>
 .
 
 Commonmark quotes can still use lazy formatting, provided the first line is not indented by more than 4 characters.
