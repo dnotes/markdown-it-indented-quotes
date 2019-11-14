@@ -1,4 +1,4 @@
-Indented text blocks are rendered as blockquotes
+Indented text blocks (blockquotes) are rendered as paragraphs with a class of "indent-*"
 .
 Paragraph text
 
@@ -6,42 +6,48 @@ Paragraph text
     It can span multiple lines.
 .
 <p>Paragraph text</p>
-<blockquote>This is a blockquote.
-It can span multiple lines.</blockquote>
+<p class="indent-1">This is a blockquote.
+It can span multiple lines.</p>
 .
 
-Blockquotes are rendered without paragraph tags
-.
-Paragraph text
-
-    This is the first paragraph of a blockquote.
-
-    This is the second paragraph of a blockquote.
-
-Paragraph text
-.
-<p>Paragraph text</p>
-<blockquote>This is the first paragraph of a blockquote.</blockquote>
-<blockquote>This is the second paragraph of a blockquote.</blockquote>
-<p>Paragraph text</p>
-.
-
-Nested blockquotes are rendered with a depth indicator
+Indented text blocks are separated by blank lines
 .
 Paragraph text
 
-    This is a blockquote that quotes someone else:
+    Blockquote text
 
-        This is a nested blockquote.
-
-    Then the first blockquote continues.
+    Blockquote text
+    
+    Blockquote text
 
 Paragraph text
 .
 <p>Paragraph text</p>
-<blockquote>This is a blockquote that quotes someone else:</blockquote>
-<blockquote class="indent-2">This is a nested blockquote.</blockquote>
-<blockquote>Then the first blockquote continues.</blockquote>
+<p class="indent-1">Blockquote text</p>
+<p class="indent-1">Blockquote text</p>
+<p class="indent-1">Blockquote text</p>
+<p>Paragraph text</p>
+.
+
+Indents are counted in multiples of four spaces or one tab
+.
+Paragraph text
+
+    Blockquote text
+
+        Blockquote text
+
+		Blockquote text
+
+	Blockquote text
+
+Paragraph text
+.
+<p>Paragraph text</p>
+<p class="indent-1">Blockquote text</p>
+<p class="indent-2">Blockquote text</p>
+<p class="indent-2">Blockquote text</p>
+<p class="indent-1">Blockquote text</p>
 <p>Paragraph text</p>
 .
 
@@ -63,25 +69,189 @@ Paragraph text
 
        Blockquote text
 
-        Nested blockquote
+        Blockquote text
 .
 <p>Paragraph text</p>
 <p>Paragraph text</p>
 <p>Paragraph text</p>
 <p>Paragraph text</p>
-<blockquote>Blockquote text</blockquote>
-<blockquote>Blockquote text</blockquote>
-<blockquote>Blockquote text</blockquote>
-<blockquote>Blockquote text</blockquote>
-<blockquote class="indent-2">Nested blockquote</blockquote>
+<p class="indent-1">Blockquote text</p>
+<p class="indent-1">Blockquote text</p>
+<p class="indent-1">Blockquote text</p>
+<p class="indent-1">Blockquote text</p>
+<p class="indent-2">Blockquote text</p>
 .
 
-Escapes, html entities, and inline markers function within quotes
+Escapes, html entities, and inline markers function within indented text blocks
 .
 text with **inlines**, \[backslash escapes\], typography(tm), "smart quotes", character references (&#x1f600;) &amp;&nbsp;entities.
 
     text with **inlines**, \[backslash escapes\], typography(tm), "smart quotes", character references (&#x1f600;) &amp;&nbsp;entities.
 .
 <p>text with <strong>inlines</strong>, [backslash escapes], typography™, “smart quotes”, character references (😀) &amp; entities.</p>
-<blockquote>text with <strong>inlines</strong>, [backslash escapes], typography™, “smart quotes”, character references (😀) &amp; entities.</blockquote>
+<p class="indent-1">text with <strong>inlines</strong>, [backslash escapes], typography™, “smart quotes”, character references (😀) &amp; entities.</p>
+.
+
+Thematic breaks and headings do not receive the indent class
+.
+    * * *
+
+    ---
+
+    # ATX Heading
+
+    SEText Heading
+    --------------
+.
+<hr />
+<hr />
+<h1>ATX Heading</h1>
+<h2>SEText Heading</h2>
+.
+
+Indented quotes must be separated from paragraphs by blank lines
+.
+
+Paragraph text:
+    This is not a quote!
+    It is part of the paragraph!
+more paragraph text.
+
+Foo
+    bar
+        baz
+
+    Foo
+bar
+baz
+
+    Foo
+    bar
+baz
+.
+<p>Paragraph text:
+This is not a quote!
+It is part of the paragraph!
+more paragraph text.</p>
+<p>Foo
+bar
+baz</p>
+<p>Foo
+bar
+baz</p>
+<p>Foo
+bar
+baz</p>
+.
+
+This is true whenever the first line is indented four spaces beyond the rest of the paragraph
+.
+        foo
+    bar
+.
+<p class="indent-1">foo
+bar</p>
+.
+
+Blank lines around indented quotes are not rendered.
+.
+
+    
+    foo
+    
+
+.
+<p class="indent-1">foo</p>
+.
+
+Trailing spaces are not rendered in blockquotes.
+.
+    foo  
+.
+<p class="indent-1">foo</p>
+.
+
+Code fences get the indent class
+.
+    ```
+    aaa
+    ```
+.
+<pre><code class="indent-1">aaa
+</code></pre>
+.
+
+Link reference definitions work even if they are indented
+.
+    [foo]: /url "title"
+
+[foo]
+.
+<p><a href="/url" title="title">foo</a></p>
+.
+
+The indent class is given to paragraphs inside blockquote elements
+.
+    > # Foo
+    > bar
+    > baz
+.
+<blockquote>
+<h1>Foo</h1>
+<p class="indent-1">bar
+baz</p>
+</blockquote>
+.
+
+Attributes must be indented the same amount as the text they modify
+.
+Paragraph text
+
+    Blockquote text {.test}
+
+    Blockquote text
+    {.test}
+
+    Paragraph text
+{.test}
+
+    Paragraph text
+    paragraph text
+{.test}
+.
+<p>Paragraph text</p>
+<p class="indent-1 test">Blockquote text</p>
+<p class="indent-1 test">Blockquote text</p>
+<p class="test">Paragraph text</p>
+<p class="test">Paragraph text
+paragraph text</p>
+.
+
+TODO: Indented quotes aren't yet parsed inside blockquote elements
+.
+>     foo
+    bar
+
+>        foo
+         bar
+.
+<blockquote>
+<p>foo
+bar</p>
+</blockquote>
+<blockquote>
+<p>foo
+bar</p>
+</blockquote>
+.
+
+Commonmark quotes can still use lazy formatting, provided the first line is not indented by more than 4 characters.
+.
+>    hey
+       you
+.
+<blockquote>
+<p>hey
+you</p>
+</blockquote>
 .
