@@ -2,42 +2,60 @@
 
 function indented_quote(state, startLine, endLine/*, silent*/) {
 
-  // If it's not indented, it's not a quote
-  if (state.sCount[startLine] - state.blkIndent < 4) { return false }
+  // If it's empty or not indented, it's not a quote
+  if (state.isEmpty(startLine) || state.sCount[startLine] - state.blkIndent < 4) { return false }
 
   // Initialize variables
-  let endQuote,
-      indent,
-      blkIndentNew = state.sCount[startLine] - state.blkIndent,
+  let endQuote = startLine + 1,
+      emptyLine = 0,
+      token,
+      blkIndentNew = state.sCount[startLine],
       blkIndentOld = state.blkIndent,
-      tokenCount = state.tokens.length
+      parentTypeOld = state.parentType
 
-  endQuote = startLine + 1
+  // Cycle through the succeeding lines to determine the end of the quote
   while (endQuote < endLine) {
-    if (state.sCount[endQuote] - state.blkIndent < 4 || state.isEmpty(endQuote)) {
+
+    // IF the line is blank:
+    if (state.isEmpty(endQuote)) {
+      // IF the following line is also empty, it ends the blockquote
+      if (state.isEmpty(endQuote + 1)) break
+      // IF the following line is unindented, it ends the blockquote
+      if (state.sCount[endQuote + 1] - state.blkIndent < 4) break
+      // OTHERWISE, remember the line number in case the quote ends unexpectedly
+      emptyLine = endQuote
+    }
+
+    // OTHERWISE, IF the line is unindented, this breaks the blockquote.
+    else if (state.sCount[endQuote] - state.blkIndent < 4) {
+      // IF there has been no empty line, then it's not a quote.
+      if (!emptyLine) return false
+      // OTHERWISE the quote ended at the last empty line
+      endQuote = emptyLine
       break
     }
-    blkIndentNew = Math.min(blkIndentNew, state.sCount[endQuote] - state.blkIndent)
+
+    // IF the line is NOT empty, set the block indent for the lower of the two
+    // This allows for indented first lines of paragraphs
+    else {
+      blkIndentNew = Math.min(blkIndentNew, state.sCount[endQuote])
+    }
     endQuote++
   }
 
-  // Indented quotes connected to a paragraph are part of the paragraph
-  if (!state.isEmpty(endQuote)) {
-    return false
-  }
-
   state.blkIndent = blkIndentNew
+  state.parentType = 'blockquote'
+
+  token = state.push('blockquote_open', 'blockquote', 1)
+  token.markup = '    '
+  token.map = [startLine, 0]
+
   state.md.block.tokenize(state, startLine, endQuote)
-  indent = ~~(state.blkIndent / 4) // eslint-disable-line
-  for (; tokenCount < state.tokens.length; tokenCount++) {
-    /* istanbul-ignore-if */
-    if ((state.tokens[tokenCount].meta === null ||
-        /* istanbul ignore next */ state.tokens[tokenCount].meta.indent === 'undefined') && // eslint-disable-line
-        ['paragraph_open', 'fence'].indexOf(state.tokens[tokenCount].type) > -1) {
-      state.tokens[tokenCount].attrPush(['class', 'indent-' + indent])
-      state.tokens[tokenCount].meta = Object.assign({}, state.tokens[tokenCount].meta, { indent: indent })
-    }
-  }
+
+  token = state.push('blockquote_close', 'blockquote', -1)
+  token.markup = '    '
+
+  state.parentType = parentTypeOld
   state.blkIndent = blkIndentOld
 
   return true

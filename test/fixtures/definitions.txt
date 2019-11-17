@@ -6,8 +6,10 @@ Paragraph text
     It can span multiple lines.
 .
 <p>Paragraph text</p>
-<p class="indent-1">This is a blockquote.
+<blockquote>
+<p>This is a blockquote.
 It can span multiple lines.</p>
+</blockquote>
 .
 
 Indented text blocks are separated by blank lines
@@ -23,9 +25,11 @@ Paragraph text
 Paragraph text
 .
 <p>Paragraph text</p>
-<p class="indent-1">Blockquote text</p>
-<p class="indent-1">Blockquote text</p>
-<p class="indent-1">Blockquote text</p>
+<blockquote>
+<p>Blockquote text</p>
+<p>Blockquote text</p>
+<p>Blockquote text</p>
+</blockquote>
 <p>Paragraph text</p>
 .
 
@@ -44,10 +48,14 @@ Paragraph text
 Paragraph text
 .
 <p>Paragraph text</p>
-<p class="indent-1">Blockquote text</p>
-<p class="indent-2">Blockquote text</p>
-<p class="indent-2">Blockquote text</p>
-<p class="indent-1">Blockquote text</p>
+<blockquote>
+<p>Blockquote text</p>
+<blockquote>
+<p>Blockquote text</p>
+<p>Blockquote text</p>
+</blockquote>
+<p>Blockquote text</p>
+</blockquote>
 <p>Paragraph text</p>
 .
 
@@ -75,11 +83,15 @@ Paragraph text
 <p>Paragraph text</p>
 <p>Paragraph text</p>
 <p>Paragraph text</p>
-<p class="indent-1">Blockquote text</p>
-<p class="indent-1">Blockquote text</p>
-<p class="indent-1">Blockquote text</p>
-<p class="indent-1">Blockquote text</p>
-<p class="indent-2">Blockquote text</p>
+<blockquote>
+<p>Blockquote text</p>
+<p>Blockquote text</p>
+<p>Blockquote text</p>
+<p>Blockquote text</p>
+<blockquote>
+<p>Blockquote text</p>
+</blockquote>
+</blockquote>
 .
 
 Escapes, html entities, and inline markers function within indented text blocks
@@ -89,10 +101,12 @@ text with **inlines**, \[backslash escapes\], typography(tm), "smart quotes", ch
     text with **inlines**, \[backslash escapes\], typography(tm), "smart quotes", character references (&#x1f600;) &amp;&nbsp;entities.
 .
 <p>text with <strong>inlines</strong>, [backslash escapes], typography™, “smart quotes”, character references (😀) &amp; entities.</p>
-<p class="indent-1">text with <strong>inlines</strong>, [backslash escapes], typography™, “smart quotes”, character references (😀) &amp; entities.</p>
+<blockquote>
+<p>text with <strong>inlines</strong>, [backslash escapes], typography™, “smart quotes”, character references (😀) &amp; entities.</p>
+</blockquote>
 .
 
-Thematic breaks and headings do not receive the indent class
+Thematic breaks and headings are rendered within the blockquote
 .
     * * *
 
@@ -103,10 +117,12 @@ Thematic breaks and headings do not receive the indent class
     SEText Heading
     --------------
 .
+<blockquote>
 <hr />
 <hr />
 <h1>ATX Heading</h1>
 <h2>SEText Heading</h2>
+</blockquote>
 .
 
 Indented quotes must be separated from paragraphs by blank lines
@@ -149,8 +165,10 @@ This is true whenever the first line is indented four spaces beyond the rest of 
         foo
     bar
 .
-<p class="indent-1">foo
+<blockquote>
+<p>foo
 bar</p>
+</blockquote>
 .
 
 Blank lines around indented quotes are not rendered.
@@ -161,14 +179,18 @@ Blank lines around indented quotes are not rendered.
     
 
 .
-<p class="indent-1">foo</p>
+<blockquote>
+<p>foo</p>
+</blockquote>
 .
 
 Trailing spaces are not rendered in blockquotes.
 .
     foo  
 .
-<p class="indent-1">foo</p>
+<blockquote>
+<p>foo</p>
+</blockquote>
 .
 
 Code fences get the indent class
@@ -177,8 +199,10 @@ Code fences get the indent class
     aaa
     ```
 .
-<pre><code class="indent-1">aaa
+<blockquote>
+<pre><code>aaa
 </code></pre>
+</blockquote>
 .
 
 Link reference definitions work even if they are indented
@@ -187,6 +211,7 @@ Link reference definitions work even if they are indented
 
 [foo]
 .
+<blockquote></blockquote>
 <p><a href="/url" title="title">foo</a></p>
 .
 
@@ -197,34 +222,54 @@ The indent class is given to paragraphs inside blockquote elements
     > baz
 .
 <blockquote>
+<blockquote>
 <h1>Foo</h1>
-<p class="indent-1">bar
+<p>bar
 baz</p>
+</blockquote>
 </blockquote>
 .
 
-Attributes must be indented the same amount as the text they modify
+Attributes can apply to blockquotes or paragraphs--except the last paragraph (TODO)
 .
-Paragraph text
+    Blockquote class
 
-    Blockquote text {.test}
-
-    Blockquote text
+    Paragraph
     {.test}
 
-    Paragraph text
-{.test}
 
-    Paragraph text
-    paragraph text
+    Paragraph class {.test}
+
+    Blockquote
+
+
+    Blockquote
+
+    Paragraph class {.test1}
+    {.test2}
+.
+<blockquote class="test">
+<p>Blockquote class</p>
+<p>Paragraph</p>
+</blockquote>
+<blockquote>
+<p class="test">Paragraph class</p>
+<p>Blockquote</p>
+</blockquote>
+<blockquote class="test2 test1">
+<p>Blockquote</p>
+<p>Paragraph class</p>
+</blockquote>
+.
+
+Attributes must be indented the same as the blockquote
+.
+    No blockquote
+    Paragraph class
 {.test}
 .
-<p>Paragraph text</p>
-<p class="indent-1 test">Blockquote text</p>
-<p class="indent-1 test">Blockquote text</p>
-<p class="test">Paragraph text</p>
-<p class="test">Paragraph text
-paragraph text</p>
+<p class="test">No blockquote
+Paragraph class</p>
 .
 
 TODO: Indented quotes aren't yet parsed inside blockquote elements
@@ -254,4 +299,51 @@ Commonmark quotes can still use lazy formatting, provided the first line is not 
 <p>hey
 you</p>
 </blockquote>
+.
+
+Indented blockquote can be combined with Commonmark blockquotes
+.
+    1.  A paragraph
+        with two lines.
+
+            indented code
+
+        > A block quote.
+.
+<blockquote>
+<ol>
+<li>
+<p>A paragraph
+with two lines.</p>
+<blockquote>
+<p>indented code</p>
+</blockquote>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+.
+
+.
+  1.  A paragraph
+with two lines.
+
+          indented code
+
+      > A block quote.
+.
+<ol>
+<li>
+<p>A paragraph
+with two lines.</p>
+<blockquote>
+<p>indented code</p>
+</blockquote>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+</li>
+</ol>
 .
