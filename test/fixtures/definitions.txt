@@ -347,3 +347,21 @@ with two lines.</p>
 </li>
 </ol>
 .
+
+Edge case: blockquote with fake second paragraph
+.
+    This is a blockquote
+    with two lines.
+
+    This starts out
+    as a second paragraph
+but turns out not part of the blockquote.
+.
+<blockquote>
+<p>This is a blockquote
+with two lines.</p>
+</blockquote>
+<p>This starts out
+as a second paragraph
+but turns out not part of the blockquote.</p>
+.
