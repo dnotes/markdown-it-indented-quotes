@@ -20,7 +20,7 @@
     "browserify": "^16.2.3",
     "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
-    "markdown-it": "^8",
+    "markdown-it": "^12",
     "markdown-it-attrs": "^2",
     "markdown-it-testgen": "^0",
     "mocha": "^6.1.4",
